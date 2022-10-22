@@ -52,55 +52,6 @@ locals {
             enable_outbound_virtual_network_peering = true
           }
         },
-        {
-          enabled = true
-          config = {
-            address_space                   = ["10.101.0.0/16", ]
-            location                        = "southeastasia"
-            link_to_ddos_protection_plan    = true
-            dns_servers                     = []
-            bgp_community                   = ""
-            subnets                         = []
-            enable_hub_network_mesh_peering = true
-            virtual_network_gateway = {
-              enabled = true
-              config = {
-                address_prefix           = "10.101.1.0/24"
-                gateway_sku_expressroute = ""
-                gateway_sku_vpn          = "VpnGw2AZ"
-                advanced_vpn_settings = {
-                  enable_bgp                       = null
-                  active_active                    = null
-                  private_ip_address_allocation    = ""
-                  default_local_network_gateway_id = ""
-                  vpn_client_configuration         = []
-                  bgp_settings                     = []
-                  custom_route                     = []
-                }
-              }
-            }
-            azure_firewall = {
-              enabled = false
-              config = {
-                address_prefix                = ""
-                enable_dns_proxy              = true
-                dns_servers                   = []
-                sku_tier                      = ""
-                base_policy_id                = ""
-                private_ip_ranges             = []
-                threat_intelligence_mode      = ""
-                threat_intelligence_allowlist = []
-                availability_zones = {
-                  zone_1 = true
-                  zone_2 = true
-                  zone_3 = true
-                }
-              }
-            }
-            spoke_virtual_network_resource_ids      = []
-            enable_outbound_virtual_network_peering = true
-          }
-        },
       ]
       vwan_hub_networks = []
       ddos_protection_plan = {
