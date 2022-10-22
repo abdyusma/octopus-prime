@@ -55,12 +55,13 @@ locals {
         {
           enabled = true
           config = {
-            address_space                = ["10.101.0.0/16", ]
-            location                     = "westeurope"
-            link_to_ddos_protection_plan = true
-            dns_servers                  = []
-            bgp_community                = ""
-            subnets                      = []
+            address_space                   = ["10.101.0.0/16", ]
+            location                        = "westeurope"
+            link_to_ddos_protection_plan    = true
+            dns_servers                     = []
+            bgp_community                   = ""
+            subnets                         = []
+            enable_hub_network_mesh_peering = true
             virtual_network_gateway = {
               enabled = true
               config = {
