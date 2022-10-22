@@ -109,7 +109,6 @@ locals {
           }
           private_link_locations = [
             "southeastasia",
-            "southeastasia",
           ]
           public_dns_zones                                       = []
           private_dns_zones                                      = []
