@@ -14,12 +14,26 @@ resource "azurerm_monitor_action_group" "main" {
   }
 }
 
-resource "azurerm_storage_account" "to_monitor" {
-  name                     = "examplesa"
-  resource_group_name      = azurerm_resource_group.example.name
-  location                 = azurerm_resource_group.example.location
-  account_tier             = "Standard"
-  account_replication_type = "GRS"
+resource "azurerm_network_security_group" "example" {
+  name                = "acceptanceTestSecurityGroup1"
+  location            = azurerm_resource_group.example.location
+  resource_group_name = azurerm_resource_group.example.name
+
+  security_rule {
+    name                       = "test123"
+    priority                   = 100
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "*"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+
+  tags = {
+    owner = "rahman"
+  }
 }
 
 resource "azurerm_monitor_activity_log_alert" "main" {
@@ -29,8 +43,8 @@ resource "azurerm_monitor_activity_log_alert" "main" {
   description         = "This alert will monitor a specific storage account updates."
 
   criteria {
-    resource_id    = azurerm_storage_account.to_monitor.id
-    operation_name = "Microsoft.Storage/storageAccounts/write"
+    resource_id    = azurerm_network_security_group.example.id
+    operation_name = "Microsoft.Network/networkSecurityGroups/write"
     category       = "Recommendation"
   }
 
