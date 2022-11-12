@@ -1,29 +1,44 @@
-data "azurerm_client_config" "core" {}
+resource "azurerm_resource_group" "example" {
+  name     = "example-resources"
+  location = "West Europe"
+}
 
-module "enterprise_scale" {
-  source  = "Azure/caf-enterprise-scale/azurerm"
-  version = "2.4.1"
+resource "azurerm_monitor_action_group" "main" {
+  name                = "example-actiongroup"
+  resource_group_name = azurerm_resource_group.example.name
+  short_name          = "p0action"
 
-  providers = {
-    azurerm              = azurerm
-    azurerm.connectivity = azurerm
-    azurerm.management   = azurerm
+  webhook_receiver {
+    name        = "callmyapi"
+    service_uri = "http://example.com/alert"
+  }
+}
+
+resource "azurerm_storage_account" "to_monitor" {
+  name                     = "examplesa"
+  resource_group_name      = azurerm_resource_group.example.name
+  location                 = azurerm_resource_group.example.location
+  account_tier             = "Standard"
+  account_replication_type = "GRS"
+}
+
+resource "azurerm_monitor_activity_log_alert" "main" {
+  name                = "example-activitylogalert"
+  resource_group_name = azurerm_resource_group.example.name
+  scopes              = [azurerm_resource_group.example.id]
+  description         = "This alert will monitor a specific storage account updates."
+
+  criteria {
+    resource_id    = azurerm_storage_account.to_monitor.id
+    operation_name = "Microsoft.Storage/storageAccounts/write"
+    category       = "Recommendation"
   }
 
-  root_parent_id = data.azurerm_client_config.core.tenant_id
-  root_id        = var.root_id
-  root_name      = var.root_name
+  action {
+    action_group_id = azurerm_monitor_action_group.main.id
 
-  deploy_management_resources    = var.deploy_management_resources
-  subscription_id_management     = data.azurerm_client_config.core.subscription_id
-  configure_management_resources = local.configure_management_resources
-
-  deploy_connectivity_resources    = var.deploy_connectivity_resources
-  subscription_id_connectivity     = data.azurerm_client_config.core.subscription_id
-  configure_connectivity_resources = local.configure_connectivity_resources
-
-  deploy_identity_resources    = var.deploy_identity_resources
-  subscription_id_identity     = data.azurerm_client_config.core.subscription_id
-  configure_identity_resources = local.configure_identity_resources
-
+    webhook_properties = {
+      from = "terraform"
+    }
+  }
 }
