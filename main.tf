@@ -2,7 +2,7 @@ data "azurerm_client_config" "core" {}
 
 module "enterprise_scale" {
   source  = "abdyusma/caf-enterprise-scale/azurerm"
-  version = "0.4.0"
+  version = "0.5.0"
 
   providers = {
     azurerm              = azurerm
