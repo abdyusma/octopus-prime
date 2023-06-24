@@ -1,5 +1,3 @@
-# Use variables to customize the deployment
-
 variable "root_id" {
   type    = string
   default = "myorg"
@@ -10,6 +8,11 @@ variable "root_name" {
   default = "My Organization"
 }
 
+variable "default_location" {
+  type    = string
+  default = "southeastasia"
+}
+
 variable "deploy_management_resources" {
   type    = bool
   default = true
@@ -17,7 +20,7 @@ variable "deploy_management_resources" {
 
 variable "log_retention_in_days" {
   type    = number
-  default = 50
+  default = 30
 }
 
 variable "security_alerts_email_address" {
