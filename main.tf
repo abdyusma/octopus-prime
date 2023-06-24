@@ -25,8 +25,8 @@ data "azurerm_client_config" "core" {}
 # and provide a base configuration.
 
 module "enterprise_scale" {
-  source  = "Azure/caf-enterprise-scale/azurerm"
-  version = "4.0.2" # change this to your desired version, https://www.terraform.io/language/expressions/version-constraints
+  source  = "abdyusma/caf-enterprise-scale/azurerm"
+  version = "0.6.0" # change this to your desired version, https://www.terraform.io/language/expressions/version-constraints
 
   default_location = var.default_location
 
